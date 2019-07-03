@@ -7,8 +7,6 @@ $password = Read-Host -Prompt "Enter password" -AsSecureString
 
 $Libraries = Import-Csv -Path C:\Temp\sharepointimport.csv -Delimiter ";" #Path for file to be imported. Needs headers "id" and "desc", ; separated, two columns.
 
-$DocLibraryName = "12701"
-
 $ctx = New-Object Microsoft.SharePoint.Client.ClientContext($siteUrl)
 $credentials = New-Object Microsoft.SharePoint.Client.SharePointOnlineCredentials($username, $password)
 $ctx.Credentials = $credentials
@@ -24,9 +22,6 @@ foreach ($DocLibraryName in $Libraries)
     if(!($Lists.Title -contains $DocLibraryName.id))
     { 
  
-# write-host -f Green $($DocLibraryName.id)
-# write-host -f Red $($DocLibraryName.desc)
- 
         #create document library in sharepoint online powershell
         $ListInfo = New-Object Microsoft.SharePoint.Client.ListCreationInformation
         $ListInfo.Title = $($DocLibraryName.id)
@@ -37,10 +32,10 @@ foreach ($DocLibraryName in $Libraries)
         $List.Update()
         $ctx.ExecuteQuery()
   
-        write-host  -f Green "New Library '$($DocLibraryName.desc)'has been created!"
+        write-host  -f Green "New Library '$($DocLibraryName.id)': '$($DocLibraryName.desc)'has been created!"
     }
     else
     {
-        Write-Host -f Yellow "List or Library '$DocLibraryName.desc' already exist!"
+        Write-Host -f Yellow "List or Library '$($DocLibraryName.id)': '$DocLibraryName.desc' already exist!"
     }
  }
