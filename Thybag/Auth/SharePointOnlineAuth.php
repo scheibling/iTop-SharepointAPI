@@ -1,12 +1,12 @@
 <?php
-namespace Thybag\Auth;
+namespace SPAPI\Auth;
 
 /**
  * SharePointOnlineAuth
  * Clone of the PHP SoapClient class, modified in order to allow transparent communication with
  * the SharePoint Online Web services.
  *
- * @package Thybag\Auth
+ * @package SPAPI\Auth
  */
 class SharePointOnlineAuth extends \SoapClient {
 

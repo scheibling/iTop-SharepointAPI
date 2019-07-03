@@ -1,5 +1,5 @@
 <?php
-namespace Thybag\Auth;
+namespace SPAPI\Auth;
 /**
  *    SoapClientAuth for accessing Web Services protected by HTTP authentication
  *    Author: tc
@@ -28,7 +28,7 @@ namespace Thybag\Auth;
  * @author tc
  * @copyright Copyright (C) 2011 tc software
  *
- * @package Thybag\Auth
+ * @package SPAPI\Auth
  */
 class StreamWrapperHttpAuth {
 

@@ -449,10 +449,10 @@ public function lowercaseIndexs ($enable) {
 	}
 
 public function query ($table) {
-		return new \Thybag\Service\QueryObjectService($table, $this);
+		return new \SPAPI\Service\QueryObjectService($table, $this);
 	}
 public function CRUD ($list_name) {
-		return new \Thybag\Service\ListService($list_name, $this);
+		return new \SPAPI\Service\ListService($list_name, $this);
 	}
 	
 private function getArrayFromElementsByTagName ($rawXml, $tag, $namespace = NULL) {

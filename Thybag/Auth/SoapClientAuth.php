@@ -1,5 +1,5 @@
 <?php
-namespace Thybag\Auth;
+namespace SPAPI\Auth;
 
 /**
  *    SoapClientAuth for accessing Web Services protected by HTTP authentication
@@ -50,18 +50,18 @@ class SoapClientAuth extends \SoapClient {
 		$wrappers = stream_get_wrappers();
 
 		stream_wrapper_unregister('http');
-		stream_wrapper_register('http', '\Thybag\Auth\StreamWrapperHttpAuth');
+		stream_wrapper_register('http', '\SPAPI\Auth\StreamWrapperHttpAuth');
 
 		if (in_array("https", $wrappers)) {
 			stream_wrapper_unregister('https');
-			stream_wrapper_register('https', '\Thybag\Auth\StreamWrapperHttpAuth');
+			stream_wrapper_register('https', '\SPAPI\Auth\StreamWrapperHttpAuth');
 		}
 
 		if ($options) {
 			$this->Username = $options['login'];
-			\Thybag\Auth\StreamWrapperHttpAuth::$Username = $this->Username;
+			\SPAPI\Auth\StreamWrapperHttpAuth::$Username = $this->Username;
 			$this->Password = $options['password'];
-			\Thybag\Auth\StreamWrapperHttpAuth::$Password = $this->Password;
+			\SPAPI\Auth\StreamWrapperHttpAuth::$Password = $this->Password;
 		}
 
 		parent::SoapClient($wsdl, ($options ? $options : array()));
