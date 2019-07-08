@@ -1,15 +1,27 @@
 # iTop-SharepointAPI
- Sharepoint Lists API for iTop
+Sharepoint Lists API for iTop. The PHP-API itself is based on Thybag's https://github.com/thybag/PHP-SharePoint-Lists-API
 
+##What does it do?
+Firstly, the included file creates Sharepoint Online Document Libraries from an excel file (csv, needs to have the headings "id" and "desc", separated by ;)
+The script is then designed to work on the Application Solution part of iTop. For each AS, it gets the current ID of the site, passes it onto a display script which displays the data inline on a tab calles Sharepoint Files. 
+This can be expanded to work with other CIs, like Servers, Computers etc.
 
-Usage:
-Insert into folder SharepointAPI in Combodos iTop. Fill in passwords. Export a list of Application Solutions. Create folders with ps1-script. Insert the following bold row below the cursive one: 
+##How do I use it?
+- Download your WSDL-file from Sharepoint online (usually sharepoint.url/subsite/_vti_bin/Lists.asmx?WSDL), place it in the extension root
+- Download, unpack and insert the module into your iTop-extensions Folder
+- Run the setup process and install the extension (see iTop website for more information)
+- Edit the settings.lsc-sharepoint.php to your specifications
 
-## application/cmdbabstract.class.inc.php: 
-<i>$oPage->AddAjaxTab(Dict::S('UI:HistoryTab'), utils::GetAbsoluteUrlAppRoot().'pages/ajax.render.php?operation=history&class='.get_class($this).'&id='.$this->GetKey());</i>
+##Where does it work?
+This script is designed to work with iTop 2.4.0 and newer
 
-<b>if ($category == "Application Solution") {$oPage->AddAjaxTab(Dict::S('UI:SharepointTab'), utils::GetAbsoluteUrlAppRoot().'/extensions/SharepointAPI/GetSharepoint.php?id='.$this->GetKey());}</b>
+##What does it need?
+Combodo's iTop and a Sharepoint installation
 
-Insert translation into UI-Dictionary calling the tab whatever you like. I inserted the following row: 
-## dictionaries/en.dictionary.itop.ui.php
-'UI:SharepointTab' => 'Documents (Sharepoint)', 
+##What's there still to do?
+- It would be nice if someone other than me looked over the code
+
+##Thanks to
+- Pierre Goiffon over on the Sourceforge iTop forum
+- Molkobain, also over on Sourceforge
+- Combodo for a great product

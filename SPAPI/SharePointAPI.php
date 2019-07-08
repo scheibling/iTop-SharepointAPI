@@ -1,5 +1,5 @@
 <?php
-namespace Thybag;
+namespace SPAPI;
 
 /**
  * SharepointAPI
@@ -16,7 +16,7 @@ namespace Thybag;
  * WSDL file needed will be located at: sharepoint.url/subsite/_vti_bin/Lists.asmx?WSDL
  *
  * Usage:
- * $sp = new \Thybag\SharePointAPI('<username>','<password>','<path_to_WSDL>');
+ * $sp = new \SPAPI\SharePointAPI('<username>','<password>','<path_to_WSDL>');
  *
  * Read:
  * $sp->read('<list_name>');
@@ -174,9 +174,9 @@ class SharePointAPI {
 		try {
 			if ((isset($options['login'])) && ($mode == 'NTLM')) {
 				// If using authentication then use the custom SoapClientAuth class.
-				$this->soapClient = new \Thybag\Auth\SoapClientAuth($this->spWsdl, $options);
+				$this->soapClient = new \SPAPI\Auth\SoapClientAuth($this->spWsdl, $options);
 			} elseif($mode == 'SPONLINE'){
-				$this->soapClient = new \Thybag\Auth\SharePointOnlineAuth($this->spWsdl, $options);
+				$this->soapClient = new \SPAPI\Auth\SharePointOnlineAuth($this->spWsdl, $options);
 			} else {
 				$this->soapClient = new \SoapClient($this->spWsdl, $options);
 			}
@@ -744,10 +744,10 @@ class SharePointAPI {
 	 * Build query's as $sp->query('my_list')->where('score','>',15)->and_where('year','=','9')->get();
 	 *
 	 * @param List name / GUID number
-	 * @return \Thybag\Service\QueryObjectService
+	 * @return \SPAPI\Service\QueryObjectService
 	 */
 	public function query ($table) {
-		return new \Thybag\Service\QueryObjectService($table, $this);
+		return new \SPAPI\Service\QueryObjectService($table, $this);
 	}
 
 	/**
@@ -755,10 +755,10 @@ class SharePointAPI {
 	 * Create a simple Create, Read, Update, Delete Wrapper around a specific list.
 	 *
 	 * @param $list_name Name of list to provide CRUD for.
-	 * @return \Thybag\Service\ListService
+	 * @return \SPAPI\Service\ListService
 	 */
 	public function CRUD ($list_name) {
-		return new \Thybag\Service\ListService($list_name, $this);
+		return new \SPAPI\Service\ListService($list_name, $this);
 	}
 
 	/**
