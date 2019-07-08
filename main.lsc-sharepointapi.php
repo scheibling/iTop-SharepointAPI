@@ -25,7 +25,7 @@ class API {
 	 */
 	public function __construct ($options = array()) {
 		assert(class_exists('SoapClient'));
-		require_once("passwords.php");
+		require_once("settings.hit-sharepointapi.php");
 		$defaultOptions = array(
 			'trace'        => $this->soap_trace,
 			'exceptions'   => $this->soap_exceptions,
@@ -909,4 +909,29 @@ protected function generateSecurityToken($username, $password, $endpoint) {
 </s:Envelope>
 TOKEN;
 	}
-}		
+}
+
+$getkey = $_GET['id'];
+if (!isset($getkey)) {die($sp->dictPleaseAcc);}
+$sp = new API();
+$result = $sp->read($getkey); 
+
+
+echo "<p><a style='color:darkblue;font-size:1.8em;' href='".$sp->spURL."/sites/".$sp->spSite.$getkey."/Forms/AllItems.aspx'><u>".$sp->dictDocFolder."</u></a></p>";
+echo "<h1><span style='color:darkblue;'>".$sp->dictFolderFile."</span>:</h1>";
+	if ($result['warning'])
+	{
+	$fail = true;
+	echo $sp->dictNoFiles.$getkey;
+	}
+
+	if (!isset($fail)) {
+		foreach ($result as $file){
+		$fileref = trim(substr($file['fileref'], strpos($file['fileref'], '#') + 1));
+		$insert = "/";
+		if (strpos($fileref, '.'))$insert = "";
+		echo "<p><a style='color:darkblue;font-size:1.3em;'href='".$sp->spURL.$fileref."?web=1'>".$file['linkfilename'].$insert."</a></p>";
+		}
+	}
+	
+?>

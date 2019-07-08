@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<extension format="1.0">
+
+<extension_code>lsc-sharepointapi</extension_code>
+
+<company>Scheibling LLC</company>
+
+
+-<author>
+
+-<![CDATA[Scheibling]]>
+</author>
+
+
+-<label>
+
+-<![CDATA[Sharepoint Integration for Application Solution]]>
+</label>
+
+
+-<description>
+
+-<![CDATA[Gets the ID of an application solution and displays the corresponding Document Library from a Sharepoint collection]]>
+</description>
+
+<version>1.2.0</version>
+
+<release_date>2019-07-01</release_date>
+
+
+<version_description>
+
+<![CDATA[First plugin version of the script. Earlier version requried changing iTop source code.]]>
+</version_description>
+
+<itop_version_min>2.2.0</itop_version_min>
+
+<status/>
+
+<mandatory>false</mandatory>
+
+<more_info_url/>
+
+</extension>
