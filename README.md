@@ -6,6 +6,9 @@ Firstly, the included file creates Sharepoint Online Document Libraries from an 
 The script is then designed to work on the Application Solution part of iTop. For each AS, it gets the current ID of the site, passes it onto a display script which displays the data inline on a tab calles Sharepoint Files. 
 This can be expanded to work with other CIs, like Servers, Computers etc.
 
+# What languages are there?
+So far English and French, more to come!
+
 # How do I use it?
 - Download, unpack and insert the module into your iTop-extensions Folder
 - Download your WSDL-file from Sharepoint online (usually sharepoint.url/subsite/_vti_bin/Lists.asmx?WSDL), place it in the extension folder
