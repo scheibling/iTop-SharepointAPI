@@ -1,7 +1,19 @@
 <?php
+
 namespace SPAPI;
+
+@include_once '../approot.inc.php';
+@include_once '../../approot.inc.php';
+@include_once '../../../approot.inc.php';
+require_once APPROOT.'/application/startup.inc.php';
+
+use MetaModel;
+use Dict;
+
 class API {
-	
+
+	const MODULE_CODE = 'lsc-SharepointAPI';
+
 	private $returnType = 0; //Return type (default: 0) 0=Array,1=Object
 	private $lower_case_indexs = TRUE; //Returns index as lowercase
 	private $MAX_ROWS = 10000; //Max rows to return
@@ -25,7 +37,6 @@ class API {
 	 */
 	public function __construct ($options = array()) {
 		assert(class_exists('SoapClient'));
-		require_once("settings.hit-sharepointapi.php");
 		$defaultOptions = array(
 			'trace'        => $this->soap_trace,
 			'exceptions'   => $this->soap_exceptions,
@@ -36,16 +47,16 @@ class API {
 			'encoding'     => $this->internal_encoding,
 		);
 		$options = array_merge($defaultOptions, $options); // $options will overwrite defaults if provided
-		
-		if (!empty($this->spUsername)) {
-			$options['login']    = $this->spUsername;
-			$options['password'] = $this->spPassword;
+
+		if (!empty(MetaModel::GetModuleSetting(static::MODULE_CODE, 'spUsername'))) {
+			$options['login']    = MetaModel::GetModuleSetting(static::MODULE_CODE, 'spUsername');
+			$options['password'] = MetaModel::GetModuleSetting(static::MODULE_CODE, 'spPassword');
 		}
-		
+
 		try {
 					if ((isset($options['login']))) {
-						$this->soapClient = new \SPAPI\SharePointOnlineAuth($this->spWsdl, $options);
-					} 
+						$this->soapClient = new \SPAPI\SharePointOnlineAuth(MetaModel::GetModuleSetting(static::MODULE_CODE, 'spWsdl'), $options);
+					}
 				} catch (\SoapFault $fault) {
 					// If we are unable to create a Soap Client display a Fatal error.
 					throw new \Exception('Unable to locate WSDL file. faultcode=' . $fault->getCode() . ',faultstring=' . $fault->getMessage());
@@ -75,7 +86,7 @@ public final function __call ($methodName, array $methodParams) {
 		// Return any values
 		return $returned;
 	}
-	
+
 public function getLimitedLists (array $keys, array $params = array('hidden' => 'False'), $isSensetive = TRUE) {
 		// Get the full list back
 		$lists = $this->getLists();
@@ -114,7 +125,7 @@ public function getLimitedLists (array $keys, array $params = array('hidden' => 
 		// Return finished array
 		return $newLists;
 	}
-	
+
 public function getLists () {
 		// Query Sharepoint for full listing of it's lists.
 		$rawXml = '';
@@ -147,7 +158,7 @@ public function getLists () {
 
 		return $results;
 	}
-	
+
 public function readListMeta ($list_name, $hideInternal = TRUE, $ignoreHiddenAttribute = FALSE) {
 		// Ready XML
 		$CAML = '
@@ -197,7 +208,7 @@ public function readFolderContents ($list_name, $folder_id){
 		$xml_options = '';
 		$xml_query   = '';
 		$fields_xml = '';
-		
+
 		$CAML = '
 			<GetListItems xmlns="http://schemas.microsoft.com/sharepoint/soap/">
 				<listName>' . $list_name . '</listName>
@@ -209,18 +220,18 @@ public function readFolderContents ($list_name, $folder_id){
 					</QueryOptions>
 				</queryOptions>
 			</GetListItems>';
-			
+
 		$xmlvar = new \SoapVar($CAML, XSD_ANYXML);
 		$result = NULL;
-		
+
 		try {
 			$result = $this->xmlHandler($this->soapClient->GetListItems($xmlvar)->GetListItemsResult->any);
 		} catch (\SoapFault $fault) {
 			$this->onError($fault);
 		}
-		
+
 		return $result;
-		
+
 }
 public function read ($list_name, $limit = NULL, $query = NULL, $view = NULL, $sort = NULL, $options = NULL) {
 		// Check limit is set
@@ -292,7 +303,7 @@ public function read ($list_name, $limit = NULL, $query = NULL, $view = NULL, $s
 		// Return a XML as nice clean Array
 		return $result;
 	}
-	
+
 public function readFromFolder($listName, $folderName, $isLibrary = false, $limit = 100, $query = NULL, $view = NULL, $sort = NULL) {
 		return $this->read($listName, $limit, $query, $view, $sort, "<Folder>" . ($isLibrary ? '' : 'Lists/') . $listName . '/' . $folderName . "</Folder>" );
 	}
@@ -300,18 +311,18 @@ public function readFromFolder($listName, $folderName, $isLibrary = false, $limi
 public function write ($list_name, array $data) {
 		return $this->writeMultiple($list_name, array($data));
 	}
-	
-	
+
+
 public function writeToFolder ($list_name, $folderPath, array $data) {
 		return $this->writeMultipleToFolder($list_name, $folderPath, array($data));
 	}
-	
 
-	
+
+
 public function writeMultiple ($list_name, array $items) {
 		return $this->modifyList($list_name, $items, 'New');
 	}
-	
+
 public function writeMultipleToFolder ($list_name, $folderPath, array $items) {
 		return $this->modifyList($list_name, $items, 'New', $folderPath);
 	}
@@ -323,7 +334,7 @@ public function update ($list_name, $ID, array $data) {
 		$data['ID'] = $ID;
 		return $this->updateMultiple($list_name, array($data));
 	}
-	
+
 public function updateMultiple ($list_name, array $items) {
 		return $this->modifyList($list_name, $items, 'Update');
 	}
@@ -331,7 +342,7 @@ public function updateMultiple ($list_name, array $items) {
 public function delete ($list_name, $ID, array $data = array()) {
 		return $this->deleteMultiple($list_name, array($ID), array($ID => $data));
 	}
-	
+
 public function deleteMultiple ($list_name, array $IDs, array $data = array()) {
 		/*
 		 * change input "array(ID1, ID2, ID3)" to "array(array('id' => ID1),
@@ -356,7 +367,7 @@ public function deleteMultiple ($list_name, array $IDs, array $data = array()) {
 		// Return a XML as nice clean Array
 		return $this->modifyList($list_name, $deletes, 'Delete');
 	}
-	
+
 public function addAttachment ($list_name, $list_item_id, $file_name) {
 		// base64 encode file
 		$attachment = base64_encode(file_get_contents($file_name));
@@ -454,7 +465,7 @@ public function query ($table) {
 public function CRUD ($list_name) {
 		return new \SPAPI\Service\ListService($list_name, $this);
 	}
-	
+
 private function getArrayFromElementsByTagName ($rawXml, $tag, $namespace = NULL) {
 		// Get DOM instance and load XML
 		$dom = new \DOMDocument();
@@ -555,25 +566,25 @@ private function sortXML (array $sort) { // Get XML for sort
 			$queryString .= '<FieldRef Name="' . $col . '" Ascending="' . $this->getSortFromValue($value) . '" />';
 		}
 		return '<OrderBy>' . $queryString . '</OrderBy>';
-	}	
-	
+	}
+
 public function viewFieldsXML(array $fields){
 		$xml = '';
 		// Convert fields to array
 		foreach($fields as $field){
 			$xml .= '<FieldRef Name="'.$field.'" />';
-		} 
+		}
 		// wrap tags
-		return  '<viewFields><ViewFields>'.$xml.'</ViewFields></viewFields>';  
+		return  '<viewFields><ViewFields>'.$xml.'</ViewFields></viewFields>';
 	}
-	
+
 public function modifyList ($list_name, array $items, $method, $folderPath = null) {
 		// Get batch XML
 		$commands = $this->prepBatch($items, $method);
 
                 $rootFolderAttr = '';
                 if($folderPath != null && $folderPath != '/') {
-                    $sitePath = substr($this->spWsdl, 0, strpos($this->spWsdl, '_vti_bin'));
+                    $sitePath = substr(MetaModel::GetModuleSetting(static::MODULE_CODE, 'spWsdl'), 0, strpos(MetaModel::GetModuleSetting(static::MODULE_CODE, 'spWsdl'), '_vti_bin'));
                     $rootFolderAttr = ' RootFolder="'.$sitePath.$list_name.'/'.$folderPath.'"';
                 }
 
@@ -636,7 +647,7 @@ private function onError (\SoapFault $fault) {
 		if (isset($fault->detail->errorstring)) {
 			$more = 'Detailed: ' . $fault->detail->errorstring;
 		}
-		
+
 		throw new \Exception('Error (' . $fault->faultcode . ') ' . $fault->faultstring . ',more=' . $more);
 	}
 
@@ -704,10 +715,10 @@ public function getFieldVersions ($list, $id, $field) {
 	    return $results;
 	}
 
-	
+
 // Alias (Identical to above)	
 public function addMultiple ($list_name, array $items) { return $this->writeMultiple($list_name, $items); }
-public function insertMultiple ($list_name, array $items) { return $this->writeMultiple($list_name, $items); }	
+public function insertMultiple ($list_name, array $items) { return $this->writeMultiple($list_name, $items); }
 public function edit($list_name, $ID, array $data) { return $this->update ($list_name, $ID, $data); }
 public function add ($list_name, array $data) { return $this->write($list_name, $data); }
 public function insert ($list_name, array $data) { return $this->write($list_name, $data); }
@@ -783,7 +794,7 @@ protected function configureAuthCookies($location) {
 		// Send request and grab returned xml
 		$result = $this->authCurl("https://login.microsoftonline.com/extSTS.srf", $xml);
 
-		
+
 		// Extract security token from XML
 		$xml = new \DOMDocument();
 		$xml->loadXML($result);
@@ -912,17 +923,17 @@ TOKEN;
 }
 
 $getkey = $_GET['id'];
-if (!isset($getkey)) {die($sp->dictPleaseAcc);}
+if (!isset($getkey)) {die(Dict::S('dictPleaseAcc'));}
 $sp = new API();
-$result = $sp->read($getkey); 
+$result = $sp->read($getkey);
 
 
-echo "<p><a style='color:darkblue;font-size:1.8em;' href='".$sp->spURL."/sites/".$sp->spSite.$getkey."/Forms/AllItems.aspx'><u>".$sp->dictDocFolder."</u></a></p>";
-echo "<h1><span style='color:darkblue;'>".$sp->dictFolderFile."</span>:</h1>";
+echo "<p><a style='color:darkblue;font-size:1.8em;' href='".MetaModel::GetModuleSetting('lsc-SharepointAPI', 'spURL')."/sites/".MetaModel::GetModuleSetting('lsc-SharepointAPI', 'spSite').$getkey."/Forms/AllItems.aspx'><u>".Dict::S('dictDocFolder')."</u></a></p>";
+echo "<h1><span style='color:darkblue;'>".Dict::S('dictFolderFile')."</span>:</h1>";
 	if ($result['warning'])
 	{
 	$fail = true;
-	echo $sp->dictNoFiles.$getkey;
+	echo Dict::S('dictNoFiles').$getkey;
 	}
 
 	if (!isset($fail)) {
@@ -930,8 +941,8 @@ echo "<h1><span style='color:darkblue;'>".$sp->dictFolderFile."</span>:</h1>";
 		$fileref = trim(substr($file['fileref'], strpos($file['fileref'], '#') + 1));
 		$insert = "/";
 		if (strpos($fileref, '.'))$insert = "";
-		echo "<p><a style='color:darkblue;font-size:1.3em;'href='".$sp->spURL.$fileref."?web=1'>".$file['linkfilename'].$insert."</a></p>";
+		echo "<p><a style='color:darkblue;font-size:1.3em;'href='".MetaModel::GetModuleSetting('lsc-SharepointAPI', 'spURL').$fileref."?web=1'>".$file['linkfilename'].$insert."</a></p>";
 		}
 	}
-	
+
 ?>
