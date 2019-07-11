@@ -45,9 +45,12 @@ SetupWebPage::AddModule(
 		//
 		'settings' => array(
 			// Module specific settings go here, if any
+			'spUsername' => '', //Username for your account, often tenant@organization.onmicrosoft.com
+			'spPassword' => '', //Password for above user
+			'spWsdl    ' => '', //Path to your lists.xml
+			'spMode    ' => '', //Which mode of sharepoint it is connecting to, unset for most normal installations, NTLM for installations that require NTLM auth and SPONLINE for SP Online
+			'spURL	 ' => '',   // format(without trailing slash): https://organization.onmicrosoft.com/
+			'spSite    ' => '', //Site name, as displayed in URL after /sites/
 		),
 	)
 );
-
-
-?>
