@@ -22,6 +22,6 @@ Combodo's iTop and a Sharepoint installation
 - It would be nice if someone other than me looked over the code
 
 # Thanks to
+- Molkobain, for contributing code to this project to integrate it better with iTop
 - Pierre Goiffon over on the Sourceforge iTop forum
-- Molkobain, also over on Sourceforge, for contributing code to this project to integrate it better with iTop
 - Combodo for a great product
