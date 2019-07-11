@@ -7,10 +7,11 @@ The script is then designed to work on the Application Solution part of iTop. Fo
 This can be expanded to work with other CIs, like Servers, Computers etc.
 
 # How do I use it?
-- Download your WSDL-file from Sharepoint online (usually sharepoint.url/subsite/_vti_bin/Lists.asmx?WSDL), place it in the extension root
 - Download, unpack and insert the module into your iTop-extensions Folder
+- Download your WSDL-file from Sharepoint online (usually sharepoint.url/subsite/_vti_bin/Lists.asmx?WSDL), place it in the extension folder
+- Edit the module.lsc-sharepointapi.php settings-part to your specifications (If you've placed the Lists.xml in your extension folder, it's sufficient to put just Lists.xml in the spWsdl property)
 - Run the setup process and install the extension (see iTop website for more information)
-- Edit the settings.lsc-sharepoint.php to your specifications
+
 
 # Where does it work?
 This script is designed to work with iTop 2.4.0 and newer
