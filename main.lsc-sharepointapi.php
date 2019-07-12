@@ -928,7 +928,7 @@ $sp = new API();
 $result = $sp->read($getkey);
 
 
-echo "<p><a style='color:darkblue;font-size:1.8em;' href='".MetaModel::GetModuleSetting('lsc-SharepointAPI', 'spURL')."/sites/".MetaModel::GetModuleSetting('lsc-SharepointAPI', 'spSite').$getkey."/Forms/AllItems.aspx'><u>".Dict::S('dictDocFolder')."</u></a></p>";
+echo "<p><a style='color:darkblue;font-size:1.8em;' href='".MetaModel::GetModuleSetting('lsc-sharepointapi', 'spURL')."/sites/".MetaModel::GetModuleSetting('lsc-sharepointapi', 'spSite').'/'.$getkey."/Forms/AllItems.aspx'><u>".Dict::S('dictDocFolder')."</u></a></p>";
 echo "<h1><span style='color:darkblue;'>".Dict::S('dictFolderFile')."</span>:</h1>";
 	if ($result['warning'])
 	{
@@ -941,7 +941,7 @@ echo "<h1><span style='color:darkblue;'>".Dict::S('dictFolderFile')."</span>:</h
 		$fileref = trim(substr($file['fileref'], strpos($file['fileref'], '#') + 1));
 		$insert = "/";
 		if (strpos($fileref, '.'))$insert = "";
-		echo "<p><a style='color:darkblue;font-size:1.3em;'href='".MetaModel::GetModuleSetting('lsc-SharepointAPI', 'spURL').$fileref."?web=1'>".$file['linkfilename'].$insert."</a></p>";
+		echo "<p><a style='color:darkblue;font-size:1.3em;'href='".MetaModel::GetModuleSetting('lsc-sharepointapi', 'spURL').'/'.$fileref."?web=1'>".$file['linkfilename'].$insert."</a></p>";
 		}
 	}
 

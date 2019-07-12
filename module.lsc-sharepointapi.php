@@ -45,12 +45,12 @@ SetupWebPage::AddModule(
 		//
 		'settings' => array(
 			// Module specific settings go here, if any
-			'spUsername' => 'tenant@organization.onmicrosoft.com', //Username for your account, example larsulrich@metallicasharepoint.onmicrosoft.com
-			'spPassword' => '', //Password for above user
-			'spWsdl' => APPROOT.'env-production/lsc-sharepointapi/Lists.xml', //Absolute path to Lists.xml, DON'T change this if you've put it in extensions/lsc-sharepointapi/Lists.xml
-			'spMode' => 'SPONLINE', //Which mode of sharepoint it is connecting to, unset for most normal installations, NTLM for installations that require NTLM auth and SPONLINE for SP Online
-			'spURL	 ' => 'https://************.sharepoint.com',   // format(without trailing slash): https://organization.onmicrosoft.com/
-			'spSite    ' => '', //Site name, as displayed in URL after /sites/
+			'spUsername' 	=> 'tenant@organization.onmicrosoft.com', 					//Username for your account, example larsulrich@metallicasharepoint.onmicrosoft.com
+			'spPassword' 	=> '', 														//Password for above user
+			'spWsdl' 		=> APPROOT.'env-production/lsc-sharepointapi/Lists.xml', 	//Absolute path to Lists.xml, DON'T change this if you've put it in extensions/lsc-sharepointapi/Lists.xml
+			'spMode' 		=> 'SPONLINE', 												//Which mode of sharepoint it is connecting to, unset for most normal installations, NTLM for installations that require NTLM auth and SPONLINE for SP Online
+			'spURL' 		=> 'https://************.sharepoint.com',   				// format(without trailing slash) ex. https://metallicasharepoint.sharepoint.com/
+			'spSite' 		=> '', 														//Site name, as displayed in URL after /sites/, without slashes
 		),
 	)
 );
