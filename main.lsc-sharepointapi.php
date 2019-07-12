@@ -12,7 +12,7 @@ use Dict;
 
 class API {
 
-	const MODULE_CODE = 'lsc-SharepointAPI';
+	const MODULE_CODE = 'lsc-sharepointapi';
 
 	private $returnType = 0; //Return type (default: 0) 0=Array,1=Object
 	private $lower_case_indexs = TRUE; //Returns index as lowercase

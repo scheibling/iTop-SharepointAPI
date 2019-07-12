@@ -5,7 +5,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'lsc-SharepointAPI/1.1.0',
+	'lsc-sharepointapi/1.3.0',
 	array(
 		// Identification
 		//
@@ -45,11 +45,11 @@ SetupWebPage::AddModule(
 		//
 		'settings' => array(
 			// Module specific settings go here, if any
-			'spUsername' => '', //Username for your account, often tenant@organization.onmicrosoft.com
+			'spUsername' => 'tenant@organization.onmicrosoft.com', //Username for your account, example larsulrich@metallicasharepoint.onmicrosoft.com
 			'spPassword' => '', //Password for above user
-			'spWsdl    ' => '', //Path to your lists.xml
-			'spMode    ' => '', //Which mode of sharepoint it is connecting to, unset for most normal installations, NTLM for installations that require NTLM auth and SPONLINE for SP Online
-			'spURL	 ' => '',   // format(without trailing slash): https://organization.onmicrosoft.com/
+			'spWsdl' => APPROOT.'env-production/lsc-sharepointapi/Lists.xml', //Absolute path to Lists.xml, DON'T change this if you've put it in extensions/lsc-sharepointapi/Lists.xml
+			'spMode' => 'SPONLINE', //Which mode of sharepoint it is connecting to, unset for most normal installations, NTLM for installations that require NTLM auth and SPONLINE for SP Online
+			'spURL	 ' => 'https://************.sharepoint.com',   // format(without trailing slash): https://organization.onmicrosoft.com/
 			'spSite    ' => '', //Site name, as displayed in URL after /sites/
 		),
 	)

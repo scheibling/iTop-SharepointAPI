@@ -19,7 +19,7 @@ class SharepointAPI implements iApplicationUIExtension
 {
 	// WARNING: This is not the module code but the folder name as the exec.php page uses the module code to find the extension folder.
 	// It is a good practice to always keep the same code for both the folder and the module code.
-	const MODULE_CODE = 'iTop-SharepointAPI';
+	const MODULE_CODE = 'lsc-sharepointapi';
 
 	public function OnDisplayProperties($oObject, WebPage $oPage, $bEditMode = false)
 		{
@@ -31,13 +31,9 @@ class SharepointAPI implements iApplicationUIExtension
 			// Add content in an async tab
 			$sPreviousTab = $oPage->GetCurrentTab();
 
-			//$sEndpoint = utils::GetAbsoluteUrlAppRoot() . 'pages/exec.php?exec_module=' . static::MODULE_CODE . '&exec_page=main.lsc-sharepointapi.php&id=' . $oObject->GetKey();
-			//$oPage->AddAjaxTab(Dict::S('Class:SharepointAPI/Attribute:SharepointTab'), $sEndpoint);
-			
-			//Temporary bugfix for HTTP 500 error thrown by exec.php when trying to load file, will go bughunting after my vacation
-			$oPage->AddAjaxTab(Dict::S('Class:SharepointAPI/Attribute:SharepointTab'), utils::GetAbsoluteUrlAppRoot() . 'extensions/lsc-sharepointapi/main.lsc-sharepointapi.php?id='.$oObject->GetKey());			
-
-			
+			$sEndpoint = utils::GetAbsoluteUrlAppRoot() . 'pages/exec.php?exec_module=' . self::MODULE_CODE . '&exec_page=main.lsc-sharepointapi.php&id=' . $oObject->GetKey();
+			$oPage->AddAjaxTab(Dict::S('Class:SharepointAPI/Attribute:SharepointTab'), $sEndpoint);	
+   
 			// Put tab cursor back to previous to make sure nothing breaks our tab (other extension for example)
 			$oPage->SetCurrentTab($sPreviousTab);
 			return;
