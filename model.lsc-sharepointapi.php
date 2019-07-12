@@ -33,7 +33,7 @@ class SharepointAPI implements iApplicationUIExtension
 
 			$sEndpoint = utils::GetAbsoluteUrlAppRoot() . 'pages/exec.php?exec_module=' . self::MODULE_CODE . '&exec_page=main.lsc-sharepointapi.php&id=' . $oObject->GetKey();
 			$oPage->AddAjaxTab(Dict::S('Class:SharepointAPI/Attribute:SharepointTab'), $sEndpoint);	
-   
+
 			// Put tab cursor back to previous to make sure nothing breaks our tab (other extension for example)
 			$oPage->SetCurrentTab($sPreviousTab);
 			return;
